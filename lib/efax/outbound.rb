@@ -1,7 +1,7 @@
 require 'net/http'
 require 'net/https'
 require 'builder'
-require 'hpricot'
+require 'nokogiri'
 require 'base64'
 
 module Net #:nodoc:
@@ -118,13 +118,13 @@ module EFax
 
     def initialize(response)  #:nodoc:
       if response.is_a? Net::HTTPOK
-        doc = Hpricot(response.body)
-        @status_code = doc.at(:statuscode).inner_text.to_i
-        @error_message = doc.at(:errormessage)
+        doc = Nokogiri::XML(response.body)
+        @status_code = doc.at(:StatusCode).inner_text.to_i
+        @error_message = doc.at(:ErrorMessage)
         @error_message = @error_message.inner_text if @error_message
-        @error_level = doc.at(:errorlevel)
+        @error_level = doc.at(:ErrorLevel)
         @error_level = @error_level.inner_text if @error_level
-        @doc_id = doc.at(:docid).inner_text
+        @doc_id = doc.at(:DOCID).inner_text
         @doc_id = @doc_id.empty? ? nil : @doc_id
       else
         @status_code = RequestStatus::HTTP_FAILURE
@@ -178,10 +178,10 @@ module EFax
 
     def initialize(response) #:nodoc:
       if response.is_a? Net::HTTPOK
-        doc = Hpricot(response.body)
-        @message = doc.at(:message).innerText
-        @classification = doc.at(:classification).innerText.delete('"')
-        @outcome = doc.at(:outcome).innerText.delete('"')
+        doc = Nokogiri::XML(response.body)
+        @message = doc.at(:Message).inner_text
+        @classification = doc.at(:Classification).inner_text.delete('"')
+        @outcome = doc.at(:Outcome).inner_text.delete('"')
         if !sent_yet?(classification, outcome) || busy_signal?(classification)
           @status_code = QueryStatus::PENDING
         elsif @classification == "Success" && @outcome == "Success"

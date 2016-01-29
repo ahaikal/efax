@@ -1,4 +1,4 @@
-require 'hpricot'
+require 'nokogiri'
 require 'base64'
 require 'tempfile'
 require 'date'
@@ -27,21 +27,21 @@ module EFax
     alias_method :sender_fax_number, :ani
 
     def initialize(xml)
-      doc            = Hpricot(xml)
-      @encoded_file_contents = doc.at(:filecontents).inner_text
-      @file_type     = doc.at(:filetype).inner_text.to_sym
-      @ani           = doc.at(:ani).inner_text
-      @account_id    = doc.at(:accountid).inner_text
-      @fax_name      = doc.at(:faxname).inner_text
-      @csid          = doc.at(:csid).inner_text
-      @status        = doc.at(:status).inner_text.to_i
-      @mcfid         = doc.at(:mcfid).inner_text.to_i
-      @page_count    = doc.at(:pagecount).inner_text.to_i
-      @request_type  = doc.at(:requesttype).inner_text
-      @date_received = datetime_to_time(DateTime.strptime("#{doc.at(:datereceived).inner_text} -08:00", "%m/%d/%Y %H:%M:%S %z"))
-      @request_date  = datetime_to_time(DateTime.strptime("#{doc.at(:requestdate).inner_text} -08:00", "%m/%d/%Y %H:%M:%S %z"))
-      @barcodes      = doc.search("//barcode/key").map { |key| key.inner_html }
-      @barcode_pages = doc.search("//barcode/AdditionalInfo/CodeLocation/PageNumber").map { |key| key.inner_html }
+      doc            = Nokogiri::XML(xml)
+      @encoded_file_contents = doc.at(:FileContents).inner_text
+      @file_type     = doc.at(:FileType).inner_text.to_sym
+      @ani           = doc.at(:ANI).inner_text
+      @account_id    = doc.at(:AccountID).inner_text
+      @fax_name      = doc.at(:FaxName).inner_text
+      @csid          = doc.at(:CSID).inner_text
+      @status        = doc.at(:Status).inner_text.to_i
+      @mcfid         = doc.at(:MCFID).inner_text.to_i
+      @page_count    = doc.at(:PageCount).inner_text.to_i
+      @request_type  = doc.at(:RequestType).inner_text
+      @date_received = datetime_to_time(DateTime.strptime("#{doc.at(:DateReceived).inner_text} -08:00", "%m/%d/%Y %H:%M:%S %z"))
+      @request_date  = datetime_to_time(DateTime.strptime("#{doc.at(:RequestDate).inner_text} -08:00", "%m/%d/%Y %H:%M:%S %z"))
+      @barcodes      = doc.xpath("//Barcode/Key").map { |key| key.inner_html }
+      @barcode_pages = doc.xpath("//Barcode/AdditionalInfo/CodeLocation/PageNumber").map { |key| key.inner_html }
     end
 
     def file_contents

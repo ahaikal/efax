@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = EFax::VERSION
 
   gem.add_runtime_dependency "builder", "~> 3.0.0"
-  gem.add_runtime_dependency "hpricot", "~> 0.8.1"
+  gem.add_runtime_dependency "nokogiri", "~> 1.6"
 
   gem.add_development_dependency "test-unit", "~> 2.3.2"
   gem.add_development_dependency "mocha", "~> 0.9.12"
