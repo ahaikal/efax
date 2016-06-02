@@ -28,22 +28,13 @@ module EFax
     def self.user
       EFax.configuration.username
     end
-    def self.user=(name)
-      @@user = name
-    end
 
     def self.password
       EFax.configuration.password
     end
-    def self.password=(password)
-      @@password = password
-    end
 
     def self.account_id
       EFax.configuration.account_id
-    end
-    def self.account_id=(id)
-      @@account_id = id
     end
 
     def self.params(content)
