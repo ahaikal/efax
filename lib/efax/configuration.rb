@@ -13,11 +13,26 @@ module EFax
     # Defaults to test.
     # @return [String]
     attr_accessor :password
+    # EFax API outbound Resolution
+    # Defaults to test.
+    # @return [String]
+    attr_accessor :resolution
+    # EFax API outbound Priority
+    # Defaults to test.
+    # @return [String]
+    attr_accessor :priority
+    # EFax API outbound SelfBusy
+    # Defaults to test.
+    # @return [String]
+    attr_accessor :self_busy
 
     def initialize
       @account_id = '0000'
       @username = 'test'
       @password = 'test'
+      @resolution = 'STANDARD'
+      @priority = 'NORMAL'
+      @self_busy = 'DISABLE'
     end
   end
 

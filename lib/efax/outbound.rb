@@ -72,9 +72,9 @@ module EFax
         end
         xml.Transmission do
           xml.TransmissionControl do
-            xml.Resolution("STANDARD")
-            xml.Priority("NORMAL")
-            xml.SelfBusy("DISABLE")
+            xml.Resolution(EFax.configuration.resolution)
+            xml.Priority(EFax.configuration.priority)
+            xml.SelfBusy(EFax.configuration.self_busy)
             xml.FaxHeader(subject)
           end
           xml.DispositionControl do

@@ -14,9 +14,13 @@ First you need to provide your account id and credentials :
 ```ruby
 
 EFax.configure do |config|
-  config.account_id = '6666'
+  config.account_id = '0000'
   config.username = 'test'
   config.password = 'test'
+  # outbound defaults
+  config.resolution = 'STANDARD'
+  config.priority = 'NORMAL'
+  config.self_busy = 'DISABLE'
 end
 ```
 Sending an HTML page using eFax service is pretty simple:
