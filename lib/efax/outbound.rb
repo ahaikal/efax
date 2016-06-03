@@ -46,8 +46,15 @@ module EFax
   end
 
   class OutboundRequest < Request
-    def self.post(name, company, fax_number, subject, content, content_type = :html)
-      xml_request = xml(name, company, fax_number, subject, content, content_type)
+    def self.post(options = {})
+      recipient_name = options.fetch(:recipient_name)
+      recipient_company_name = options.fetch(:recipient_company_name)
+      recipient_fax_number = options.fetch(:recipient_fax_number)
+      subject = options.fetch(:subject, '')
+      content = options.fetch(:content)
+      content_type = options.fetch(:content_type, :pdf)
+
+      xml_request = xml(recipient_name, recipient_company_name, recipient_fax_number, subject, content, content_type)
       response = Net::HTTPS.start(EFax::Uri.host, EFax::Uri.port) do |https|
         https.post(EFax::Uri.path, params(xml_request), EFax::HEADERS)
       end
@@ -65,9 +72,9 @@ module EFax
         end
         xml.Transmission do
           xml.TransmissionControl do
-            xml.Resolution("FINE")
+            xml.Resolution("STANDARD")
             xml.Priority("NORMAL")
-            xml.SelfBusy("ENABLE")
+            xml.SelfBusy("DISABLE")
             xml.FaxHeader(subject)
           end
           xml.DispositionControl do
