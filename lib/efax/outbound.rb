@@ -26,24 +26,15 @@ module EFax
   # Base class for OutboundRequest and OutboundStatus classes
   class Request
     def self.user
-      @@user
-    end
-    def self.user=(name)
-      @@user = name
+      EFax.configuration.username
     end
 
     def self.password
-      @@password
-    end
-    def self.password=(password)
-      @@password = password
+      EFax.configuration.password
     end
 
     def self.account_id
-      @@account_id
-    end
-    def self.account_id=(id)
-      @@account_id = id
+      EFax.configuration.account_id
     end
 
     def self.params(content)

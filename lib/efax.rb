@@ -23,6 +23,7 @@
 #++
 #
 
+require 'efax/configuration'
 require 'efax/version'
 require 'efax/outbound'
 require 'efax/inbound'
