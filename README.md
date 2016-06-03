@@ -8,17 +8,22 @@ You can find eFax Developer API guides at [efaxdeveloper.com](https://secure.efa
 
 ### Outbound Faxes
 
-First you need to provide your account id and credentials:
+First you need to provide your account id and credentials :
+` initializers/efax.rb`
 
 ```ruby
-EFax::Request.account_id = <your account id>
-EFax::Request.user       = <your login>
-EFax::Request.password   = <your password>
+
+EFax.configure do |config|
+  config.account_id = '6666'
+  config.username = 'test'
+  config.password = 'test'
+end
 ```
 Sending an HTML page using eFax service is pretty simple:
 
 ```ruby
-response = EFax::OutboundRequest.post(recipient_name, company_name, fax_number, subject, content)
+efax_response = EFax::OutboundRequest.post(recipient_name: 'name', recipient_company_name: 'company_name',
+recipient_fax_number: fax_number, subject: 'test', content: content, content_type: :pdf)
 ```
 
 See `EFax::RequestStatus` class for details on status codes.
